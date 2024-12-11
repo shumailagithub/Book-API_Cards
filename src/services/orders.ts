@@ -1,89 +1,22 @@
-// "use server"
-
-
-// //--------------------------------------Place order
-// export async function placeOrders(token: any, bookId: any, clientName: any) {
-//   const response = await fetch("https://simple-books-api.glitch.me/orders",{
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       "Authorization": `Bearer ${token}`
-//     },
-//     body: JSON.stringify({
-//       "bookId": bookId,
-//       "customerName": clientName
-//     })
-//   })
-
-//   if (response.status !== 201){
-//     return ("Failed to place order");
-//   }
-
-//   const data = await response.json();
-//   return data;
-// }
-
-
-
-
-// //---------------------------------------Get orders
-// export async function getOrders(token: any) {
-//   const response = await fetch("https://simple-books-api.glitch.me/orders",{
-//     method : "GET",
-//     headers: {
-//        "Authorization": `Bearer ${token}`
-//     }
-//   })
-
-//   if (!response.ok){
-//     return ("Failed to get orders");
-//   }
-
-//   const data = await response.json();
-//   return data;
-// }
-
-
-
-// //---------------------------------------Delete order
-// export async function deleteOrder(token: any, orderId: any) {
-//   const response = await fetch(`https://simple-books-api.glitch.me/orders/${orderId}`,{
-//     method: "DELETE",
-//     headers: {
-//       "Authorization": `Bearer ${token}`
-//     }
-//   })
-
-//   if (!response.ok){
-//     return ("Failed to delete order");
-//   }else{
-//     return ("Order deleted successfully");
-//   }
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 "use server";
+
+interface Order {
+  id: string;
+  bookId: string | number;
+  customerName: string;
+}
+
+interface PlaceOrderResponse {
+  orderId: string;
+  message: string;
+}
 
 //--------------------------------------Place order
 export async function placeOrders(
   token: string,
   bookId: string | number,
   clientName: string
-): Promise<any> {
+): Promise<PlaceOrderResponse | string> {
   const response = await fetch("https://simple-books-api.glitch.me/orders", {
     method: "POST",
     headers: {
@@ -91,7 +24,7 @@ export async function placeOrders(
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      bookId: bookId,
+      bookId,
       customerName: clientName,
     }),
   });
@@ -100,12 +33,12 @@ export async function placeOrders(
     return "Failed to place order";
   }
 
-  const data = await response.json();
+  const data: PlaceOrderResponse = await response.json();
   return data;
 }
 
 //---------------------------------------Get orders
-export async function getOrders(token: string): Promise<any> {
+export async function getOrders(token: string): Promise<Order[] | string> {
   const response = await fetch("https://simple-books-api.glitch.me/orders", {
     method: "GET",
     headers: {
@@ -117,7 +50,7 @@ export async function getOrders(token: string): Promise<any> {
     return "Failed to get orders";
   }
 
-  const data = await response.json();
+  const data: Order[] = await response.json();
   return data;
 }
 
@@ -138,7 +71,7 @@ export async function deleteOrder(
 
   if (!response.ok) {
     return "Failed to delete order";
-  } else {
-    return "Order deleted successfully";
   }
+
+  return "Order deleted successfully";
 }
