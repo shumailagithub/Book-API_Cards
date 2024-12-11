@@ -1,8 +1,19 @@
-async function fetchBooks(p0: string){
-    const books = await fetch('https://simple-books-api.glitch.me/books');
-    if(books.ok){
-        "failed to fetch books"
-
+async function fetchBooks(): Promise<any[]> {
+    const response = await fetch("https://simple-books-api.glitch.me/books");
+  
+    if (!response.ok) {
+      throw new Error("Failed to fetch books");
     }
-    return books.json();
-}
+  
+    return response.json();
+  }
+  
+  // Example usage:
+  fetchBooks()
+    .then((books) => {
+      console.log("Fetched books:", books);
+    })
+    .catch((error) => {
+      console.error(error.message);
+    });
+  
