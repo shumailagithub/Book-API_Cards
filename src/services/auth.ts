@@ -1,25 +1,27 @@
-"use server";
+"use server"
 
-export async function registerClient(clientName: string, clientEmail: string) {
-  const response = await fetch("https://simple-books-api.glitch.me/api-clients", {
+
+
+export async function registerClient(clientName: any, clientEmail: any) {
+  const response = await fetch("https://simple-books-api.glitch.me/api-clients",{
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      clientName: clientName,
-      clientEmail: clientEmail,
-    }),
-  });
+      "clientName": clientName,
+      "clientEmail": clientEmail,
+   })
+  })
 
-  if (response.status === 409) {
-    return "Client already exists with this email";
+  if(response.status === 409){
+    return ("Client already exists with this email")
   }
 
-  if (!response.ok) {
-    return "Failed to register client";
+  if(!response.ok){
+    return ("Failed to register client")
   }
 
-  const data = await response.json();
-  return data.accessToken;
+  const data = await response.json()
+  return data.accessToken
 }

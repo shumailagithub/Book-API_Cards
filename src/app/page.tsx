@@ -1,6 +1,6 @@
 "use client"
 
-import BookCards from "@/components/BookCards";
+import BookCards from '@/components/BookCards'
 
 export default function Home() {
   return (
